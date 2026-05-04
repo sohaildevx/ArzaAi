@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function AuthLayout({
   children,
 }: {
@@ -18,9 +20,11 @@ export default function AuthLayout({
               <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
             </svg>
           </div>
-          <span className="text-xl font-bold text-white">
-            Arza<span className="text-accent">AI</span>
-          </span>
+          <Link href="/" className="text-xl font-bold text-white">
+            <span className="text-xl font-bold text-white">
+              Arza<span className="text-accent">AI</span>
+            </span>
+          </Link>
         </div>
 
         <div className="space-y-6">

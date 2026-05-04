@@ -2,13 +2,14 @@
 
 import { useSession, signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Loader2, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function DashboardPage() {
   const { data: session, isPending } = useSession();
   const router = useRouter();
+  const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => {
     if (!isPending && !session) {
@@ -53,10 +54,20 @@ export default function DashboardPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => signOut().then(() => router.push("/sign-in"))}
+            disabled={signingOut}
+            onClick={async () => {
+              setSigningOut(true);
+              await signOut();
+              router.push("/sign-in");
+            }}
+            className="group transition-all duration-200 hover:border-destructive hover:text-destructive"
           >
-            <LogOut className="h-4 w-4 mr-2" />
-            साइन आउट
+            {signingOut ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <LogOut className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:translate-x-0.5" />
+            )}
+            {signingOut ? "साइन आउट होत आहे..." : "साइन आउट"}
           </Button>
         </div>
       </header>
