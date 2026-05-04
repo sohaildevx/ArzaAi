@@ -36,10 +36,10 @@ export function Navbar() {
 
           <div className="hidden md:flex items-center gap-3">
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/login">लॉग इन</Link>
+              <Link href="/sign-in">लॉग इन</Link>
             </Button>
             <Button size="sm" className="bg-primary hover:bg-primary/90" asChild>
-              <Link href="/signup">मोफत सुरू करा</Link>
+              <Link href="/sign-up">मोफत सुरू करा</Link>
             </Button>
           </div>
 

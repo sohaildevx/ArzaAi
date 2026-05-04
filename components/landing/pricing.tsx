@@ -17,7 +17,7 @@ const plans = [
       "मराठी / हिंदी इनपुट",
     ],
     cta: "मोफत सुरू करा",
-    href: "/signup",
+    href: "/sign-up",
     highlighted: false,
   },
   {
@@ -35,7 +35,7 @@ const plans = [
       "30 दिवस वैधता",
     ],
     cta: "खरेदी करा",
-    href: "/signup?plan=basic",
+    href: "/sign-up?plan=basic",
     highlighted: true,
   },
   {
@@ -54,7 +54,7 @@ const plans = [
       "90 दिवस वैधता",
     ],
     cta: "खरेदी करा",
-    href: "/signup?plan=pro",
+    href: "/sign-up?plan=pro",
     highlighted: false,
   },
 ];

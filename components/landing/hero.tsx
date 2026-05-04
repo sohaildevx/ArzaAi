@@ -39,7 +39,7 @@ export function Hero() {
 
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button size="lg" className="bg-primary hover:bg-primary/90 gap-2" asChild>
-                <Link href="/signup">
+                <Link href="/sign-up">
                   मोफत सुरू करा
                   <ArrowRight className="h-4 w-4" />
                 </Link>

@@ -29,7 +29,7 @@ export function Footer() {
               <li><Link href="#how-it-works" className="hover:text-white transition-colors">हे कसे काम करते</Link></li>
               <li><Link href="#features" className="hover:text-white transition-colors">वैशिष्ट्ये</Link></li>
               <li><Link href="#pricing" className="hover:text-white transition-colors">किंमत</Link></li>
-              <li><Link href="/signup" className="hover:text-white transition-colors">नोंदणी करा</Link></li>
+              <li><Link href="/sign-up" className="hover:text-white transition-colors">नोंदणी करा</Link></li>
             </ul>
           </div>
 
