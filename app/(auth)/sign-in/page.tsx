@@ -149,7 +149,7 @@ export default function SignInPage() {
 
       
       <Button variant="outline" className="w-full h-11" asChild>
-        <Link href="/register">नवीन खाते तयार करा</Link>
+        <Link href="/sign-up">नवीन खाते तयार करा</Link>
       </Button>
 
       <p className="text-center text-xs text-muted-foreground">
