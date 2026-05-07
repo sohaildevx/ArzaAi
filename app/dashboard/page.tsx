@@ -3,8 +3,9 @@
 import { useSession, signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Loader2, LogOut } from "lucide-react";
+import { Loader2, LogOut, Plus, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function DashboardPage() {
   const { data: session, isPending } = useSession();
@@ -73,18 +74,39 @@ export default function DashboardPage() {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-12">
-        <div className="space-y-2 mb-10">
-          <h1 className="text-3xl font-bold text-primary">
-            नमस्कार, {session.user.name ?? session.user.email} 👋
-          </h1>
-          <p className="text-muted-foreground">
-            Your ArzaAI dashboard — legal document drafting starts here.
-          </p>
+        <div className="flex items-start justify-between mb-10 gap-4 flex-wrap">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold text-primary">
+              नमस्कार, {session.user.name ?? session.user.email} 👋
+            </h1>
+            <p className="text-muted-foreground">
+              Your ArzaAI dashboard — legal document drafting starts here.
+            </p>
+          </div>
+          <Button className="bg-primary hover:bg-primary/90 gap-2 shrink-0" asChild>
+            <Link href="/dashboard/new">
+              <Plus className="h-4 w-4" />
+              नवीन अर्ज
+            </Link>
+          </Button>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-8 text-center text-muted-foreground">
-          <p className="text-lg font-medium">अर्ज तयार करण्यासाठी येथे क्लिक करा</p>
-          <p className="text-sm mt-1">Document creation coming soon.</p>
+        <div className="rounded-xl border-2 border-dashed border-border bg-card/50 p-12 text-center flex flex-col items-center gap-4">
+          <div className="h-14 w-14 rounded-full bg-muted flex items-center justify-center">
+            <FileText className="h-6 w-6 text-muted-foreground" />
+          </div>
+          <div>
+            <p className="font-semibold text-foreground">अजून कोणताही अर्ज नाही</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              No documents yet — create your first one
+            </p>
+          </div>
+          <Button variant="outline" className="gap-2 border-primary/30 text-primary hover:bg-primary/5" asChild>
+            <Link href="/dashboard/new">
+              <Plus className="h-4 w-4" />
+              पहिला अर्ज तयार करा
+            </Link>
+          </Button>
         </div>
       </main>
     </div>
