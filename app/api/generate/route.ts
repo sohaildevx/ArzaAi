@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { SUB_CATEGORIES } from "@/lib/document-config";
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -201,12 +204,24 @@ function buildUserMessage(req: GenerateRequest): string {
 ${fieldLines}`;
 }
 
+// ─── Helpers ───────────────────────────────────────────────────────────────────
+
+function getSubCategoryLabel(category: string, subCategory: string): string {
+  const subs = SUB_CATEGORIES[category] ?? [];
+  return subs.find((s) => s.id === subCategory)?.label ?? subCategory;
+}
+
 // ─── Route handler ─────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
   try {
-    const body: GenerateRequest = await req.json();
+    // Auth check
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "कृपया आधी साइन इन करा." }, { status: 401 });
+    }
 
+    const body: GenerateRequest = await req.json();
     const { category, subCategory, authority, applicantName, applicantAddress, date } = body;
 
     if (!category || !subCategory || !authority || !applicantName || !applicantAddress || !date) {
@@ -229,7 +244,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "दस्तऐवज तयार करता आला नाही. पुन्हा प्रयत्न करा." }, { status: 500 });
     }
 
-    return NextResponse.json({ document: generatedText });
+    // Save to database
+    const title = `${getSubCategoryLabel(category, subCategory)} — ${date}`;
+    const saved = await db.document.create({
+      data: {
+        userId: session.user.id,
+        title,
+        category,
+        subCategory,
+        authority,
+        content: generatedText,
+      },
+    });
+
+    return NextResponse.json({ document: generatedText, documentId: saved.id });
   } catch (err) {
     console.error("[generate]", err);
     return NextResponse.json({ error: "सर्व्हर त्रुटी. पुन्हा प्रयत्न करा." }, { status: 500 });
