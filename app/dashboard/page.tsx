@@ -3,10 +3,16 @@
 import { useSession, signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
-import { Loader2, LogOut, Plus, FileText, Trash2, Eye } from "lucide-react";
+import { Loader2, LogOut, Plus, FileText, Trash2, Eye, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { DISPUTE_CATEGORIES, SUB_CATEGORIES, AUTHORITIES } from "@/lib/document-config";
+
+declare global {
+  interface Window {
+    Razorpay?: new (options: Record<string, unknown>) => { open: () => void };
+  }
+}
 
 interface DocumentSummary {
   id: string;
@@ -41,6 +47,8 @@ export default function DashboardPage() {
   const [documents, setDocuments] = useState<DocumentSummary[]>([]);
   const [loadingDocs, setLoadingDocs] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [payingPlan, setPayingPlan] = useState<string | null>(null);
+  const [payError, setPayError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isPending && !session) router.replace("/sign-in");
@@ -62,6 +70,74 @@ export default function DashboardPage() {
   useEffect(() => {
     if (session) fetchDocuments();
   }, [session, fetchDocuments]);
+
+  async function loadRazorpayScript() {
+    if (typeof window === "undefined") return false;
+    if (window.Razorpay) return true;
+
+    return new Promise<boolean>((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  }
+
+  async function handleBuyCredits(plan: "basic" | "pro") {
+    setPayError(null);
+    setPayingPlan(plan);
+    try {
+      const scriptReady = await loadRazorpayScript();
+      if (!scriptReady) {
+        setPayError("पेमेंट स्क्रिप्ट लोड झाली नाही. पुन्हा प्रयत्न करा.");
+        return;
+      }
+
+      const res = await fetch("/api/billing/razorpay/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan }),
+      });
+
+      if (!res.ok) {
+        const msg = await res.text();
+        setPayError(msg || "पेमेंट सुरु करता आले नाही.");
+        return;
+      }
+
+      const data = (await res.json()) as {
+        orderId: string;
+        amount: number;
+        currency: string;
+        keyId: string;
+        plan: string;
+      };
+
+      if (!window.Razorpay) {
+        setPayError("पेमेंट सुरु करता आले नाही.");
+        return;
+      }
+
+      const options = {
+        key: data.keyId,
+        amount: data.amount,
+        currency: data.currency,
+        name: "ArzaAI",
+        description: data.plan === "basic" ? "30 क्रेडिट" : "100 क्रेडिट",
+        order_id: data.orderId,
+        theme: { color: "#1f6feb" },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } catch (err) {
+      console.error("[buy-credits]", err);
+      setPayError("पेमेंट सुरु करता आले नाही.");
+    } finally {
+      setPayingPlan(null);
+    }
+  }
 
   async function handleDelete(id: string) {
     if (!confirm("हा दस्तऐवज कायमचा हटवायचा का?")) return;
@@ -123,13 +199,31 @@ export default function DashboardPage() {
               तुमचे ArzaAI डॅशबोर्ड — सर्व दस्तऐवज येथे सेव्ह होतात.
             </p>
           </div>
-          <Button className="bg-primary hover:bg-primary/90 gap-2 shrink-0" asChild>
-            <Link href="/dashboard/new">
-              <Plus className="h-4 w-4" />
-              नवीन अर्ज
-            </Link>
-          </Button>
+          <div className="flex items-center gap-3 flex-wrap">
+            <Button variant="outline" className="gap-2" onClick={() => handleBuyCredits("basic")}
+              disabled={payingPlan !== null}>
+              <CreditCard className="h-4 w-4" />
+              30 क्रेडिट · ₹99
+            </Button>
+            <Button variant="outline" className="gap-2" onClick={() => handleBuyCredits("pro")}
+              disabled={payingPlan !== null}>
+              <CreditCard className="h-4 w-4" />
+              100 क्रेडिट · ₹249
+            </Button>
+            <Button className="bg-primary hover:bg-primary/90 gap-2 shrink-0" asChild>
+              <Link href="/dashboard/new">
+                <Plus className="h-4 w-4" />
+                नवीन अर्ज
+              </Link>
+            </Button>
+          </div>
         </div>
+
+        {payError && (
+          <div className="mb-8 rounded-lg border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+            {payError}
+          </div>
+        )}
 
         {/* Document list */}
         {loadingDocs ? (
