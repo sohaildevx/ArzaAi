@@ -16,12 +16,29 @@ model User {
   email         String
   emailVerified Boolean    @default(false)
   image         String?
+  credits       Int        @default(5)
   sessions      Session[]
   accounts      Account[]
   documents     Document[]
+  creditTxns    CreditTransaction[]
 
   @@unique([email])
   @@map("user")
+}
+
+model CreditTransaction {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider  String
+  reference String
+  plan      String?
+  credits   Int
+
+  @@unique([provider, reference])
+  @@index([userId])
+  @@map("credit_transaction")
 }
 
 model Document {

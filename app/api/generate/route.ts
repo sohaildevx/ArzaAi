@@ -221,6 +221,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "कृपया आधी साइन इन करा." }, { status: 401 });
     }
 
+    const user = await db.user.findUnique({
+      where: { id: session.user.id },
+      select: { credits: true },
+    });
+
+    if (!user || user.credits <= 0) {
+      return NextResponse.json({ error: "तुमचे क्रेडिट संपले आहेत." }, { status: 402 });
+    }
+
     const body: GenerateRequest = await req.json();
     const { category, subCategory, authority, applicantName, applicantAddress, date } = body;
 
@@ -244,18 +253,31 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "दस्तऐवज तयार करता आला नाही. पुन्हा प्रयत्न करा." }, { status: 500 });
     }
 
-    // Save to database
+    // Save to database + spend 1 credit atomically
     const title = `${getSubCategoryLabel(category, subCategory)} — ${date}`;
-    const saved = await db.document.create({
-      data: {
-        userId: session.user.id,
-        title,
-        category,
-        subCategory,
-        authority,
-        content: generatedText,
-      },
+    const saved = await db.$transaction(async (tx) => {
+      const updated = await tx.user.updateMany({
+        where: { id: session.user.id, credits: { gt: 0 } },
+        data: { credits: { decrement: 1 } },
+      });
+
+      if (updated.count === 0) return null;
+
+      return tx.document.create({
+        data: {
+          userId: session.user.id,
+          title,
+          category,
+          subCategory,
+          authority,
+          content: generatedText,
+        },
+      });
     });
+
+    if (!saved) {
+      return NextResponse.json({ error: "तुमचे क्रेडिट संपले आहेत." }, { status: 402 });
+    }
 
     return NextResponse.json({ document: generatedText, documentId: saved.id });
   } catch (err) {
