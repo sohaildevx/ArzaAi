@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## ArzaAI
 
-## Getting Started
+ArzaAI is a application that generates Marathi legal documents from user inputs. Users can sign up, generate documents, manage saved documents, and buy additional credits via Razorpay.
 
-First, run the development server:
+## Features
+
+- Landing page with feature walkthrough and pricing
+- Auth with email and password (better-auth + Prisma)
+- Document generation API backed by OpenAI
+- Saved documents list and detail views
+- Credit system with Razorpay checkout and webhook fulfillment
+
+## Tech Stack
+
+- Next.js (App Router) + React
+- TypeScript
+- Prisma + PostgreSQL (Neon adapter)
+- better-auth
+- OpenAI SDK
+- Tailwind CSS + shadcn/ui
+
+## Routes
+
+### App routes
+
+- /: Landing page
+- /sign-in, /sign-up: Auth screens
+- /dashboard: User documents, credits, and actions
+- /dashboard/documents/[id]: Document detail
+
+### API routes
+
+- /api/auth/*: Auth handlers
+- /api/generate: Generate a document with OpenAI
+- /api/documents: List or delete user documents
+- /api/documents/[id]: Get a single document
+- /api/billing/razorpay/order: Create Razorpay order
+- /api/billing/razorpay/webhook: Razorpay webhook for credit fulfillment
+
+## Setup
+
+1) Install dependencies
+
+```bash
+npm install
+```
+
+2) Create a .env file
+
+```bash
+DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DB
+OPENAI_API_KEY=sk-...
+RAZORPAY_KEY_ID=...
+RAZORPAY_KEY_SECRET=...
+RAZORPAY_WEBHOOK_SECRET=...
+# Optional live keys (used as fallback)
+RAZORPAY_LIVE_KEY=...
+RAZORPAY_LIVE_SECRET=...
+```
+
+3) Run Prisma migrations
+
+```bash
+npx prisma migrate dev
+```
+
+4) Start the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- npm run dev: Start development server
+- npm run build: Build for production
+- npm run start: Run production server
+- npm run lint: Lint the codebase
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Notes
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Razorpay webhook must be publicly reachable and configured to send payment.captured events.
+- Credits and document access are scoped to the authenticated user.
