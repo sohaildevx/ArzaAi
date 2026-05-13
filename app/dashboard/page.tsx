@@ -3,7 +3,7 @@
 import { useSession, signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
-import { Loader2, LogOut, Plus, FileText, Trash2, Eye, CreditCard } from "lucide-react";
+import { Loader2, LogOut, Plus, FileText, Trash2, Eye, CreditCard, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { DISPUTE_CATEGORIES, SUB_CATEGORIES, AUTHORITIES } from "@/lib/document-config";
@@ -49,6 +49,8 @@ export default function DashboardPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [payingPlan, setPayingPlan] = useState<string | null>(null);
   const [payError, setPayError] = useState<string | null>(null);
+  const [credits, setCredits] = useState<number | null>(null);
+  const [loadingCredits, setLoadingCredits] = useState(false);
 
   useEffect(() => {
     if (!isPending && !session) router.replace("/sign-in");
@@ -70,6 +72,22 @@ export default function DashboardPage() {
   useEffect(() => {
     if (session) fetchDocuments();
   }, [session, fetchDocuments]);
+
+  const fetchCredits = useCallback(async () => {
+    try {
+      setLoadingCredits(true);
+      const res = await fetch("/api/credits");
+      if (!res.ok) return;
+      const data = (await res.json()) as { credits?: number };
+      setCredits(typeof data.credits === "number" ? data.credits : null);
+    } finally {
+      setLoadingCredits(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (session) fetchCredits();
+  }, [session, fetchCredits]);
 
   async function loadRazorpayScript() {
     if (typeof window === "undefined") return false;
@@ -127,6 +145,9 @@ export default function DashboardPage() {
         description: data.plan === "basic" ? "30 क्रेडिट" : "100 क्रेडिट",
         order_id: data.orderId,
         theme: { color: "#1f6feb" },
+        handler: () => {
+          fetchCredits();
+        },
       };
 
       const razorpay = new window.Razorpay(options);
@@ -200,6 +221,13 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-2 rounded-full border border-border bg-muted/40 px-4 py-2 text-sm">
+              <Zap className="h-4 w-4 text-accent" />
+              <span className="text-muted-foreground">क्रेडिट</span>
+              <span className="font-semibold text-foreground">
+                {loadingCredits ? "..." : (credits ?? 0)}
+              </span>
+            </div>
             <Button variant="outline" className="gap-2" onClick={() => handleBuyCredits("basic")}
               disabled={payingPlan !== null}>
               <CreditCard className="h-4 w-4" />
