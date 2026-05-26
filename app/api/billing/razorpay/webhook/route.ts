@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { db } from "@/lib/db";
+import type { Prisma } from "@prisma/client";
 
 const PLAN_CREDITS: Record<string, number> = {
   basic: 30,
@@ -69,7 +70,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ received: true });
   }
 
-  await db.$transaction(async (tx) => {
+  await db.$transaction(async (tx: Prisma.TransactionClient) => {
     await tx.user.update({
       where: { id: userId },
       data: { credits: { increment: creditsToAdd } },
