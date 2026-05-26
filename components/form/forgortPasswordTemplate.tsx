@@ -19,8 +19,8 @@ interface ForgotPasswordEmailProps {
 }
 
 export const ForgotPasswordEmail = ({
-  userEmail = 'user@example.com',
-  resetPasswordUrl = 'https://example.com/reset',
+  userEmail,
+  resetPasswordUrl,
 }: ForgotPasswordEmailProps) => {
   return (
     <Html>

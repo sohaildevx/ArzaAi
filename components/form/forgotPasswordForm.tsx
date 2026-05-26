@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { authClient } from "@/lib/auth-client";
+
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,8 +22,15 @@ export function ForgotPasswordForm() {
     setLoading(true);
 
     try {
+      const { data, error } = await authClient.requestPasswordReset({
+        email: email,
+        redirectTo: "/reset-password",
+      });
       
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      if (error) {
+        throw new Error(error.message || "Something went wrong.");
+      }
+
       setSuccess(true);
     } catch (err: any) {
       setError(err.message ?? "काहीतरी चूक झाली आहे. पुन्हा प्रयत्न करा.");

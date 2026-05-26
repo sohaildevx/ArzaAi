@@ -61,7 +61,7 @@ export default function RegisterPage() {
 
   return (
     <div className="w-full max-w-sm space-y-8">
-      {/* Mobile logo */}
+      
       <div className="flex lg:hidden items-center gap-2">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
           <svg
@@ -79,7 +79,7 @@ export default function RegisterPage() {
         </span>
       </div>
 
-      {/* Header */}
+      
       <div className="space-y-2">
         <h1 className="text-2xl font-bold text-primary">खाते तयार करा</h1>
         <p className="text-sm text-muted-foreground">
@@ -87,7 +87,7 @@ export default function RegisterPage() {
         </p>
       </div>
 
-      {/* Free credits badge */}
+      
       <div className="flex items-center gap-3 rounded-xl border border-accent/30 bg-accent/8 px-4 py-3">
         <span className="text-xl">⚡</span>
         <div>
@@ -96,7 +96,7 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* Form */}
+     
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-2">
           <Label htmlFor="name" className="text-sm font-medium text-foreground">
@@ -179,7 +179,7 @@ export default function RegisterPage() {
         </Button>
       </form>
 
-      {/* Divider */}
+      
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-border" />

@@ -85,7 +85,7 @@ export default function SignInPage() {
               पासवर्ड
             </Label>
             <Link
-              href="/reset-password"
+              href="/forgot-password"
               className="text-xs text-accent hover:underline"
             >
               पासवर्ड विसरलात?
