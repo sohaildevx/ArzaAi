@@ -170,25 +170,28 @@ export default function NewDocumentPage() {
 
             {/* Category cards */}
             <div className="grid sm:grid-cols-2 gap-3">
-              {DISPUTE_CATEGORIES.map((cat) => (
-                <button key={cat.id} type="button" onClick={() => handleCategorySelect(cat.id)}
-                  className={`text-left rounded-xl border-2 p-4 transition-all duration-150 hover:border-primary/50 hover:bg-primary/5 ${
-                    category === cat.id ? "border-primary bg-primary/8 shadow-sm" : "border-border bg-card"}`}>
-                  <div className="flex items-start gap-3">
-                    <span className="text-2xl">{cat.icon}</span>
-                    <div className="flex-1">
-                      <p className="font-semibold text-foreground">{cat.label}</p>
-                      <p className="text-xs text-muted-foreground">{cat.sublabel}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{cat.desc}</p>
-                    </div>
-                    {category === cat.id && (
-                      <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center shrink-0">
-                        <span className="text-white text-xs">✓</span>
+              {DISPUTE_CATEGORIES.map((cat) => {
+                const Icon = cat.icon;
+                return (
+                  <button key={cat.id} type="button" onClick={() => handleCategorySelect(cat.id)}
+                    className={`text-left rounded-xl border-2 p-4 transition-all duration-150 hover:border-primary/50 hover:bg-primary/5 ${
+                      category === cat.id ? "border-primary bg-primary/8 shadow-sm" : "border-border bg-card"}`}>
+                    <div className="flex items-start gap-3">
+                      <Icon className={`h-8 w-8 shrink-0 ${category === cat.id ? "text-primary" : "text-muted-foreground"}`} />
+                      <div className="flex-1">
+                        <p className="font-semibold text-foreground">{cat.label}</p>
+                        <p className="text-xs text-muted-foreground">{cat.sublabel}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{cat.desc}</p>
                       </div>
-                    )}
-                  </div>
-                </button>
-              ))}
+                      {category === cat.id && (
+                        <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center shrink-0">
+                          <span className="text-white text-xs">✓</span>
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Sub-category — shown once category is selected */}
@@ -381,7 +384,7 @@ export default function NewDocumentPage() {
             {/* Summary card */}
             <div className="rounded-xl border border-border bg-card divide-y divide-border overflow-hidden">
               <div className="px-5 py-4 bg-primary/5 flex items-center gap-3 flex-wrap">
-                <span className="text-2xl">{selectedCategory?.icon}</span>
+                {selectedCategory && <selectedCategory.icon className="h-6 w-6 text-primary" />}
                 <div>
                   <p className="font-semibold text-primary">{selectedSub?.label}</p>
                   <p className="text-xs text-muted-foreground">

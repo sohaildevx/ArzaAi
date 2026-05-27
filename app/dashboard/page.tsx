@@ -6,6 +6,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Loader2, LogOut, Plus, FileText, Trash2, Eye, CreditCard, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import React from "react";
 import { DISPUTE_CATEGORIES, SUB_CATEGORIES, AUTHORITIES } from "@/lib/document-config";
 
 declare global {
@@ -23,8 +24,8 @@ interface DocumentSummary {
   createdAt: string;
 }
 
-function getCategoryIcon(category: string): string {
-  return DISPUTE_CATEGORIES.find((c) => c.id === category)?.icon ?? "📄";
+function getCategoryIcon(category: string): React.ElementType {
+  return DISPUTE_CATEGORIES.find((c) => c.id === category)?.icon ?? FileText;
 }
 
 function getSubCategoryLabel(category: string, subCategory: string): string {
@@ -285,8 +286,8 @@ export default function DashboardPage() {
               <div key={doc.id}
                 className="flex items-center gap-4 rounded-xl border border-border bg-card px-5 py-4 hover:border-primary/30 hover:bg-primary/5 transition-colors group">
                 {/* Icon */}
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 text-xl">
-                  {getCategoryIcon(doc.category)}
+                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  {React.createElement(getCategoryIcon(doc.category), { className: "h-5 w-5 text-primary" })}
                 </div>
 
                 {/* Info */}

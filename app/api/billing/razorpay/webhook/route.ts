@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { db } from "@/lib/db";
-import type { Prisma } from "@prisma/client";
 
 const PLAN_CREDITS: Record<string, number> = {
   basic: 30,
   pro: 100,
 };
+
+type TransactionCallback = Extract<Parameters<typeof db.$transaction>[0], (tx: any) => unknown>;
+type TransactionClient = TransactionCallback extends (tx: infer T) => unknown ? T : never;
 
 function isSignatureValid(body: string, signature: string | null, secret: string): boolean {
   if (!signature) return false;
@@ -70,7 +72,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ received: true });
   }
 
-  await db.$transaction(async (tx: Prisma.TransactionClient) => {
+  await db.$transaction(async (tx: TransactionClient) => {
     await tx.user.update({
       where: { id: userId },
       data: { credits: { increment: creditsToAdd } },

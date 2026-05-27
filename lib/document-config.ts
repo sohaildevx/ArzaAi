@@ -1,3 +1,6 @@
+import { Home, PenTool, Scale, Search, Mail } from "lucide-react";
+import * as React from "react";
+
 export type FieldType = "text" | "textarea" | "date" | "select";
 
 export interface FieldDef {
@@ -14,7 +17,7 @@ export interface DisputeCategory {
   id: string;
   label: string;
   sublabel: string;
-  icon: string;
+  icon: React.ElementType;
   desc: string;
 }
 
@@ -38,35 +41,35 @@ export const DISPUTE_CATEGORIES: DisputeCategory[] = [
     id: "jamin",
     label: "जमीन / महसूल वाद",
     sublabel: "Land & Revenue Disputes",
-    icon: "🏡",
+    icon: Home,
     desc: "फेरफार आक्षेप, वारस नोंद, वाटणी, नाव दुरुस्ती, अतिक्रमण",
   },
   {
     id: "affidavit",
     label: "प्रतिज्ञापत्र",
     sublabel: "Affidavit",
-    icon: "✍️",
+    icon: PenTool,
     desc: "नाव दुरुस्ती, वय/DOB दुरुस्ती, जात प्रमाणपत्र, सामान्य शपथपत्र",
   },
   {
     id: "takrar",
     label: "तक्रार",
     sublabel: "Complaint",
-    icon: "⚖️",
+    icon: Scale,
     desc: "पोलीस तक्रार, ग्राहक तक्रार, महिला सहाय्यता",
   },
   {
     id: "rti",
     label: "RTI अर्ज",
     sublabel: "RTI Application",
-    icon: "🔍",
+    icon: Search,
     desc: "माहितीचा अधिकार अधिनियम, २००५ अंतर्गत माहिती मागणी",
   },
   {
     id: "notice",
     label: "कायदेशीर नोटीस",
     sublabel: "Legal Notice",
-    icon: "📨",
+    icon: Mail,
     desc: "विरुद्ध पक्षाला औपचारिक कायदेशीर नोटीस",
   },
 ];

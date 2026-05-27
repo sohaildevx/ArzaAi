@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, Copy, Check, Loader2, Paperclip } from "lucide-react";
+import { ArrowLeft, Copy, Check, Loader2, Paperclip, FileText, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { DISPUTE_CATEGORIES, SUB_CATEGORIES, AUTHORITIES, ANNEXURE_MAP } from "@/lib/document-config";
@@ -17,8 +17,8 @@ interface DocumentFull {
   createdAt: string;
 }
 
-function getCategoryIcon(category: string): string {
-  return DISPUTE_CATEGORIES.find((c) => c.id === category)?.icon ?? "📄";
+function getCategoryIcon(category: string): React.ElementType {
+  return DISPUTE_CATEGORIES.find((c) => c.id === category)?.icon ?? FileText;
 }
 
 function getSubCategoryLabel(category: string, subCategory: string): string {
@@ -108,7 +108,9 @@ export default function DocumentViewPage() {
         </Button>
         <div className="h-5 w-px bg-border" />
         <div className="flex items-center gap-2 min-w-0">
-          <span className="text-lg">{getCategoryIcon(doc.category)}</span>
+          <div className="flex items-center justify-center">
+            {React.createElement(getCategoryIcon(doc.category), { className: "h-5 w-5 text-primary" })}
+          </div>
           <span className="font-semibold text-primary truncate">{subLabel}</span>
         </div>
       </header>
@@ -128,7 +130,7 @@ export default function DocumentViewPage() {
                        : <><Copy className="h-4 w-4" />कॉपी करा</>}
             </Button>
             <Button variant="outline" size="sm" onClick={handlePrint} className="gap-2">
-              🖨️ Print / PDF
+              <Printer className="h-4 w-4" /> Print / PDF
             </Button>
           </div>
         </div>

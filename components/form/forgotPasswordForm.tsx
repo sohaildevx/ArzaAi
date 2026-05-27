@@ -98,8 +98,10 @@ export function ForgotPasswordForm() {
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               कृपया प्रतीक्षा करा...
             </>
+          ) : success ? (
+            "पुन्हा रीसेट लिंक पाठवा"
           ) : (
-            "पुढे जा"
+            "रीसेट लिंक पाठवा"
           )}
         </Button>
       </form>
