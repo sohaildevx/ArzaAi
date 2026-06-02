@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { resetPassword } from "@/lib/auth-client";
+import {toast} from "sonner";
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -26,17 +27,17 @@ function ResetPasswordForm() {
     setSuccess(false);
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match. (पासवर्ड जुळत नाहीत)");
+      setError("पासवर्ड जुळत नाहीत");
       return;
     }
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters. (पासवर्ड किमान ८ अक्षरांचा असावा)");
+      setError("पासवर्ड किमान ८ अक्षरांचा असावा");
       return;
     }
 
     if (!token) {
-      setError("Invalid or missing reset token. Please use the link from your email.");
+      setError("अवैध किंवा गहाळ रीसेट टोकन. कृपया तुमच्या ईमेलमधील लिंक वापरा.");
       return;
     }
 
@@ -48,11 +49,12 @@ function ResetPasswordForm() {
     });
 
     if (resetError) {
-      setError(resetError.message ?? "Failed to reset password. Please try again.");
+      toast.error(resetError.message ?? "पासवर्ड रीसेट करण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.");
       setLoading(false);
       return;
     }
 
+    toast.success("पासवर्ड यशस्वीरित्या रीसेट झाला!");
     setSuccess(true);
     setLoading(false);
     setTimeout(() => {
@@ -98,7 +100,7 @@ function ResetPasswordForm() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
             <Label htmlFor="password" className="text-sm font-medium text-foreground">
-              New Password (नवीन पासवर्ड)
+              नवीन पासवर्ड
             </Label>
             <div className="relative">
               <Input
@@ -123,7 +125,7 @@ function ResetPasswordForm() {
 
           <div className="space-y-2">
             <Label htmlFor="confirmPassword" className="text-sm font-medium text-foreground">
-              Confirm Password (पासवर्डची पुष्टी करा)
+              पासवर्डची पुष्टी करा
             </Label>
             <div className="relative">
               <Input

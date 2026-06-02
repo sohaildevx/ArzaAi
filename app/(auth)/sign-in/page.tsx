@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "@/lib/auth-client";
+import {toast} from "sonner";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -26,10 +27,12 @@ export default function SignInPage() {
 
     if (error) {
       setError(error.message ?? "लॉग इन करताना त्रुटी आली. पुन्हा प्रयत्न करा.");
+      toast.error(error.message ?? "लॉग इन करताना त्रुटी आली. पुन्हा प्रयत्न करा.");
       setLoading(false);
       return;
     }
 
+    toast.success("लॉग इन यशस्वी! स्वागत आहे.");
     router.push("/dashboard");
   }
 

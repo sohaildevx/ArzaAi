@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signUp } from "@/lib/auth-client";
+import {toast} from "sonner";
 
 function PasswordStrength({ password }: { password: string }) {
   const checks = [
@@ -52,10 +53,12 @@ export default function RegisterPage() {
 
     if (error) {
       setError(error.message ?? "नोंदणी करताना त्रुटी आली. पुन्हा प्रयत्न करा.");
+      toast.error(error.message ?? "नोंदणी करताना त्रुटी आली. पुन्हा प्रयत्न करा.");
       setLoading(false);
       return;
     }
 
+    toast.success("नोंदणी यशस्वी! कृपया तुमच्या ईमेलची पुष्टी करा.");
     router.push("/dashboard");
   }
 

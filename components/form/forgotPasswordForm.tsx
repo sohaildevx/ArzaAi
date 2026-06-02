@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {toast} from "sonner";
 
 import { authClient } from "@/lib/auth-client";
 
@@ -31,9 +32,10 @@ export function ForgotPasswordForm() {
         throw new Error(error.message || "Something went wrong.");
       }
 
+      toast.success("पासवर्ड रीसेट लिंक पाठवली आहे! कृपया तुमचा ईमेल तपासा.");
       setSuccess(true);
     } catch (err: any) {
-      setError(err.message ?? "काहीतरी चूक झाली आहे. पुन्हा प्रयत्न करा.");
+      toast.error(err.message ?? "काहीतरी चूक झाली आहे. पुन्हा प्रयत्न करा.");
     } finally {
       setLoading(false);
     }

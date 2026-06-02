@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 import { DISPUTE_CATEGORIES, SUB_CATEGORIES, AUTHORITIES } from "@/lib/document-config";
+import {toast} from "sonner";
 
 declare global {
   interface Window {
@@ -110,6 +111,7 @@ export default function DashboardPage() {
       const scriptReady = await loadRazorpayScript();
       if (!scriptReady) {
         setPayError("पेमेंट स्क्रिप्ट लोड झाली नाही. पुन्हा प्रयत्न करा.");
+        toast.error("पेमेंट स्क्रिप्ट लोड झाली नाही. पुन्हा प्रयत्न करा.");
         return;
       }
 
@@ -122,6 +124,7 @@ export default function DashboardPage() {
       if (!res.ok) {
         const msg = await res.text();
         setPayError(msg || "पेमेंट सुरु करता आले नाही.");
+        toast.error(msg || "पेमेंट सुरु करता आले नाही.");
         return;
       }
 
@@ -135,6 +138,7 @@ export default function DashboardPage() {
 
       if (!window.Razorpay) {
         setPayError("पेमेंट सुरु करता आले नाही.");
+        toast.error("पेमेंट सुरु करता आले नाही.");
         return;
       }
 
@@ -148,6 +152,7 @@ export default function DashboardPage() {
         theme: { color: "#1f6feb" },
         handler: () => {
           fetchCredits();
+          toast.success("पेमेंट यशस्वी झाले! तुमचे क्रेडिट्स जोडले गेले आहेत.");
         },
       };
 
@@ -156,6 +161,7 @@ export default function DashboardPage() {
     } catch (err) {
       console.error("[buy-credits]", err);
       setPayError("पेमेंट सुरु करता आले नाही.");
+      toast.error("पेमेंट सुरु करता आले नाही."); 
     } finally {
       setPayingPlan(null);
     }
@@ -167,6 +173,7 @@ export default function DashboardPage() {
     try {
       await fetch(`/api/documents?id=${id}`, { method: "DELETE" });
       setDocuments((prev) => prev.filter((d) => d.id !== id));
+      toast.success("दस्तऐवज यशस्वीरित्या हटवला");
     } finally {
       setDeletingId(null);
     }
@@ -200,7 +207,18 @@ export default function DashboardPage() {
         <div className="flex items-center gap-4">
           <span className="text-sm text-muted-foreground hidden sm:block">{session.user.email}</span>
           <Button variant="outline" size="sm" disabled={signingOut}
-            onClick={async () => { setSigningOut(true); await signOut(); router.push("/sign-in"); }}
+            onClick={async () => {
+              setSigningOut(true);
+              try {
+                toast.success("साइन आउट होत आहे...");
+                await signOut();
+                router.push("/sign-in");
+              } catch (err) {
+                console.error("[sign-out]", err);
+                toast.error("साइन आउट होऊ शकला नाही. पुन्हा प्रयत्न करा.");
+                setSigningOut(false);
+              }
+            }}
             className="group transition-all duration-200 hover:border-destructive hover:text-destructive">
             {signingOut
               ? <Loader2 className="h-4 w-4 mr-2 animate-spin" />

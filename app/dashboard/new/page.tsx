@@ -15,6 +15,7 @@ import {
   ANNEXURE_MAP,
   type FieldDef,
 } from "@/lib/document-config";
+import {toast} from "sonner";
 
 const STEPS = ["प्रकार निवडा", "अधिकारी निवडा", "तपशील भरा", "Generate करा"] as const;
 
@@ -87,9 +88,11 @@ export default function NewDocumentPage() {
       });
       const data = await res.json();
       if (!res.ok) { setGenError(data.error ?? "दस्तऐवज तयार करता आला नाही."); return; }
+      toast.success("दस्तऐवज यशस्वीरित्या तयार झाला!");
       setGeneratedDoc(data.document);
     } catch {
       setGenError("नेटवर्क त्रुटी. इंटरनेट कनेक्शन तपासा.");
+      toast.error("नेटवर्क त्रुटी. इंटरनेट कनेक्शन तपासा.");
     } finally {
       setGenerating(false);
     }
