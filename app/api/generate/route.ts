@@ -6,6 +6,9 @@ import { SUB_CATEGORIES } from "@/lib/document-config";
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+type TransactionCallback = Extract<Parameters<typeof db.$transaction>[0], (tx: any) => unknown>;
+type TransactionClient = TransactionCallback extends (tx: infer T) => unknown ? T : never;
+
 export interface GenerateRequest {
   category: string;
   subCategory: string;
@@ -255,7 +258,7 @@ export async function POST(req: NextRequest) {
 
     // Save to database + spend 1 credit atomically
     const title = `${getSubCategoryLabel(category, subCategory)} — ${date}`;
-    const saved = await db.$transaction(async (tx) => {
+    const saved = await db.$transaction(async (tx: TransactionClient) => {
       const updated = await tx.user.updateMany({
         where: { id: session.user.id, credits: { gt: 0 } },
         data: { credits: { decrement: 1 } },
