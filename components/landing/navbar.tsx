@@ -66,10 +66,10 @@ export function Navbar() {
           </Link>
           <div className="pt-2 flex flex-col gap-2">
             <Button variant="outline" size="sm" asChild className="w-full">
-              <Link href="/login">लॉग इन</Link>
+              <Link href="/sign-in">लॉग इन</Link>
             </Button>
             <Button size="sm" className="w-full bg-primary" asChild>
-              <Link href="/signup">मोफत सुरू करा</Link>
+              <Link href="/sign-up">मोफत सुरू करा</Link>
             </Button>
           </div>
         </div>

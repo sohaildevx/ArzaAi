@@ -18,19 +18,16 @@ export function Hero() {
           <div className="flex flex-col gap-6">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent">
               <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-              महाराष्ट्र न्यायालयासाठी AI
+              कायदेशीर व प्रशासकीय मसुद्यांसाठी AI
             </div>
 
             <h1 className="text-4xl sm:text-5xl font-bold leading-tight text-primary">
-              कोर्ट टाइपिस्टशिवाय{" "}
-              <span className="text-accent">अर्ज, प्रतिज्ञापत्र</span>{" "}
-              तयार करा
+              परिस्थिती सांगा, <span className="text-accent">मराठीत मसुदा</span> मिळवा
             </h1>
 
             <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
-              ArzaAI च्या मदतीने तुमचे हस्तलिखित कागद अपलोड करा किंवा सोप्या
-              भाषेत परिस्थिती सांगा — आम्ही योग्य फॉर्मेटमध्ये कायदेशीर
-              कागदपत्र तयार करतो.
+              मराठी, हिंदी किंवा इंग्रजीत परिस्थिती लिहा — ArzaAI योग्य फॉरमॅटमध्ये
+              मसुदा तयार करते.
             </p>
 
             <p className="text-sm text-muted-foreground italic">

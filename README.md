@@ -6,9 +6,9 @@
 
 ## Problem Statement
 
-Millions of Marathi-speaking people in Maharashtra depend on local revenue offices, police stations, consumer forums, and civil courts for everyday legal matters — land disputes, affidavits, complaints, RTI applications, and legal notices. Getting these documents typed correctly requires visiting a court typist, knowing the right legal language, and understanding the exact format each authority expects. This process is slow, expensive, and inaccessible for people in rural and semi-urban areas.
+Many people in Maharashtra face difficulties when preparing legal and administrative documents such as applications, complaints, affidavits, RTI requests, and notices. These documents often require specific formats and formal language, making the process time-consuming and challenging for those without legal drafting experience.
 
-ArzaAI eliminates this friction. Describe your situation in plain Marathi or Hindi — or upload a handwritten document — and the platform generates a properly formatted, court-ready legal document tailored to the specific authority (Talathi, Tahsildar, Police, Court, Notary, etc.). No typist, no legal jargon, no repeated visits.
+ArzaAI simplifies this process by allowing users to describe their situation in Marathi, Hindi, or English and generate structured Marathi document drafts tailored to the relevant authority. By making document drafting more accessible, ArzaAI helps users prepare legal and administrative paperwork faster and with greater ease.
 
 ## Features
 
@@ -131,4 +131,4 @@ Please keep PRs focused — one feature or fix per PR.
 
 ## License
 
-This project is private. All rights reserved.
+This project is licensed under the [MIT License](LICENSE).
