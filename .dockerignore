@@ -1,0 +1,17 @@
+node_modules
+.next
+.env
+.env.*
+.git
+Dockerfile
+Dockerfile.*
+docker-compose.yml
+dist
+coverage
+npm-debug.log
+.DS_Store
+.vscode
+*.log
+/.idea
+build
+out
