@@ -4,8 +4,6 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { SUB_CATEGORIES } from "@/lib/document-config";
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 type TransactionCallback = Extract<Parameters<typeof db.$transaction>[0], (tx: any) => unknown>;
 type TransactionClient = TransactionCallback extends (tx: infer T) => unknown ? T : never;
 
@@ -240,6 +238,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "सर्व आवश्यक माहिती भरा." }, { status: 400 });
     }
 
+    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const completion = await client.chat.completions.create({
       model: "gpt-4o",
       messages: [
