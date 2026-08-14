@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      CI_TEST_SECRET: ${{ secrets.CI_TEST_SECRET }}
+
     steps:
      - name: Checkout code
        uses: actions/checkout@v4
