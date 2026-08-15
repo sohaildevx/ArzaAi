@@ -23,7 +23,13 @@ jobs:
          password: ${{ secrets.DOCKERHUB_TOKEN }}
          
      - name: Build Docker image
-       run: docker build -t sohaildev1/arzaai:v2 .
+       run: |
+        docker build \
+        -t sohaildev1/arzaai:${{ github.sha }} \
+        -t sohaildev1/arzaai:latest .
+
+     - name: Push versioned image
+       run: docker push sohaildev1/arzaai:${{ github.sha }}
       
      - name: Push Docker image
-       run: docker push sohaildev1/arzaai:v2 
+       run: docker push sohaildev1/arzaai:latest

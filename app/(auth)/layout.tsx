@@ -30,25 +30,27 @@ export default function AuthLayout({
         <div className="space-y-6">
           <blockquote className="space-y-3">
             <p className="text-3xl font-bold text-white leading-snug">
-              "कोर्ट टाइपिस्टशिवाय अर्ज तयार करा — अगदी सोप्या भाषेत."
+              “मराठीतून कोर्ट-रेडी legal drafting बनवा — अगदी सोप्या भाषेत.”
             </p>
             <p className="text-white/60 text-sm">
-              Create court-ready Marathi legal documents without a typist.
+              Marathi legal drafts, prepared clearly and quickly.
             </p>
           </blockquote>
 
           <div className="flex gap-6">
             <div className="space-y-1">
-              <p className="text-2xl font-bold text-accent">10,000+</p>
-              <p className="text-xs text-white/60">Documents created</p>
+              <p className="text-2xl font-bold text-accent">ड्राफ्ट</p>
+              <p className="text-xs text-white/60">मराठीत</p>
             </div>
             <div className="space-y-1">
-              <p className="text-2xl font-bold text-accent">500+</p>
-              <p className="text-xs text-white/60">Court users</p>
+              <p className="text-2xl font-bold text-accent">फॉर्मॅट</p>
+              <p className="text-xs text-white/60">कोर्ट-रेडी</p>
             </div>
             <div className="space-y-1">
-              <p className="text-2xl font-bold text-accent">34</p>
-              <p className="text-xs text-white/60">Districts covered</p>
+              <p className="text-2xl font-bold text-accent">ड्राफ्टिंगसाठी</p>
+              <p className="text-xs text-white/60">
+                कायदेशीर सल्ल्यांसाठी नाही
+              </p>
             </div>
           </div>
         </div>
