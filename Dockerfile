@@ -23,21 +23,13 @@ WORKDIR /app
 # Use production environment
 ENV NODE_ENV=production
 
-# Install only production dependencies (skip postinstall scripts such as `prisma generate`)
-# Postinstall ran during build stage; skip scripts here to avoid schema lookups at runtime
-COPY package*.json ./
-RUN npm ci --only=production --ignore-scripts
-
-# Copy built artifacts and necessary runtime files from builder
-COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/lib ./lib
-COPY --from=builder /app/next.config.ts ./next.config.ts
 
-# Generate Prisma client for runtime
-RUN npx prisma generate
+
+USER node
 
 EXPOSE 3000
 
-CMD ["npm","start"]
+CMD ["node", "server.js"]
