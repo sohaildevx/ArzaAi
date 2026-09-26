@@ -4,6 +4,14 @@
   <img src="public/images/Landing.png" alt="ArzaAI Landing Page" width="100%" />
 </p>
 
+## Demo Video
+
+<p align="center">
+  <a href="https://youtu.be/OaVTUp5sw7c">
+    <img src="https://img.youtube.com/vi/OaVTUp5sw7c/maxresdefault.jpg" alt="ArzaAI Demo Video" width="70%" />
+  </a>
+</p>
+
 ## Problem Statement
 
 Many people in Maharashtra face difficulties when preparing legal and administrative documents such as applications, complaints, affidavits, RTI requests, and notices. These documents often require specific formats and formal language, making the process time-consuming and challenging for those without legal drafting experience.
